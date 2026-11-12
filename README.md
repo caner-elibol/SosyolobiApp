@@ -1,58 +1,58 @@
 # Sosyolobi
 
-Sosyolobi, insanların çevrelerindeki sosyal aktiviteleri harita üzerinde keşfedip katılabildiği, kendi aktivitelerini oluşturup yeni insanlarla tanışabildiği bir sosyal etkinlik platformudur.
+Sosyolobi is a location-based social activity platform where people can discover and join activities around them on a map, create their own activities, and meet new people.
 
-## Özellikler
+## Features
 
-- **Telefon ile giriş** — SMS/OTP doğrulama, JWT + refresh token
-- **Harita üzerinde aktiviteler** — konuma göre yakındaki aktiviteleri listeleme ve kümeleme (PostGIS)
-- **Aktivite yönetimi** — oluşturma, düzenleme, kategori, seviye ve cinsiyet tercihi, katılım istekleri
-- **Gerçek zamanlı sohbet** — aktivite sohbet odaları (SignalR)
-- **Bildirimler** — anlık bildirimler (SignalR)
-- **Arkadaşlık** — arkadaşlık istekleri, kullanıcı engelleme
-- **Profil ve değerlendirmeler** — profil fotoğrafı, kullanıcı yorumları ve puanları
-- **Şikayet sistemi** — kullanıcı ve içerik raporlama
-- **Admin paneli** — kullanıcı, aktivite, kategori, şikayet ve yorum yönetimi, dashboard istatistikleri
+- **Phone sign-in** — SMS/OTP verification, JWT + refresh token
+- **Activities on a map** — nearby activity listing and clustering by location (PostGIS)
+- **Activity management** — create and edit activities with category, skill level and gender preference; join requests
+- **Real-time chat** — per-activity chat rooms (SignalR)
+- **Notifications** — real-time notifications (SignalR)
+- **Friends** — friend requests, user blocking
+- **Profiles & reviews** — profile photos, user reviews and ratings
+- **Reporting** — report users and content
+- **Admin panel** — manage users, activities, categories, reports and reviews; dashboard statistics
 
-## Proje Yapısı
+## Project Structure
 
 ```
 Sosyolobi/
 ├── Sosyolobi Backend/    # ASP.NET Core 10 Web API
-├── sosyolobi-web-2/      # Next.js web uygulaması (kullanıcı + admin paneli)
-└── sosyolobi-mobile/     # Flutter mobil uygulama (Android / iOS)
+├── sosyolobi-web-2/      # Next.js web app (user app + admin panel)
+└── sosyolobi-mobile/     # Flutter mobile app (Android / iOS)
 ```
 
-## Teknolojiler
+## Tech Stack
 
-| Katman | Teknoloji |
+| Layer | Technology |
 |---|---|
 | Backend | ASP.NET Core 10, Entity Framework Core, SignalR, Swagger |
-| Veritabanı | PostgreSQL 16 + PostGIS |
-| Önbellek | Redis |
+| Database | PostgreSQL 16 + PostGIS |
+| Cache | Redis |
 | Web | Next.js 16, React 19, TypeScript, Tailwind CSS 4, TanStack Query, MapLibre |
-| Mobil | Flutter, Riverpod, Dio, go_router, MapLibre |
-| Altyapı | Docker / Docker Compose |
+| Mobile | Flutter, Riverpod, Dio, go_router, MapLibre |
+| Infrastructure | Docker / Docker Compose |
 
-## Kurulum
+## Getting Started
 
-### Gereksinimler
+### Prerequisites
 
-- [Docker](https://www.docker.com/) ve Docker Compose
-- [.NET 10 SDK](https://dotnet.microsoft.com/) (Docker olmadan çalıştırmak için)
+- [Docker](https://www.docker.com/) and Docker Compose
+- [.NET 10 SDK](https://dotnet.microsoft.com/) (to run without Docker)
 - [Node.js](https://nodejs.org/) 20+
 - [Flutter SDK](https://flutter.dev/) 3.x
 
 ### 1. Backend
 
-Ortam değişkenlerini hazırlayın (opsiyonel — boş bırakılanlar varsayılan değerlere düşer):
+Set up environment variables (optional — anything left empty falls back to the defaults):
 
 ```bash
 cd "Sosyolobi Backend"
 cp .env.example .env   # JWT_SECRET, PEXELS_API_KEY, POSTGRES_PASSWORD
 ```
 
-Docker Compose ile veritabanı ve API'yi birlikte başlatın:
+Start the database and the API together with Docker Compose:
 
 ```bash
 docker compose up -d --build
@@ -62,7 +62,7 @@ docker compose up -d --build
 - Swagger: http://localhost:5000/swagger
 - PostgreSQL: `localhost:5433`
 
-Migration'lar ve başlangıç verileri uygulama açılışında otomatik uygulanır.
+Migrations and seed data are applied automatically on startup.
 
 ### 2. Web
 
@@ -73,11 +73,11 @@ npm install
 npm run dev
 ```
 
-Web uygulaması http://localhost:3000 adresinde açılır. Admin paneli `/admin` altındadır.
+The web app runs at http://localhost:3000. The admin panel is under `/admin`.
 
-### 3. Mobil
+### 3. Mobile
 
-API adresi `sosyolobi-mobile/env/dev.json` ve `env/prod.json` dosyalarından okunur. Android emülatör için varsayılan değer `http://10.0.2.2:5000`'dir.
+The API URL is read from `sosyolobi-mobile/env/dev.json` and `env/prod.json`. The default for the Android emulator is `http://10.0.2.2:5000`.
 
 ```bash
 cd sosyolobi-mobile
@@ -85,12 +85,12 @@ flutter pub get
 flutter run -t lib/main_dev.dart --dart-define-from-file=env/dev.json
 ```
 
-## Yapılandırma
+## Configuration
 
-`appsettings.json` yalnızca varsayılan/yer tutucu değerler içerir. Gerçek gizli bilgiler (JWT anahtarı, Pexels API anahtarı, veritabanı şifresi) ortam değişkenleriyle verilir: Docker ile çalışırken `Sosyolobi Backend/.env`, doğrudan çalıştırırken `Jwt__Secret`, `Pexels__ApiKey` gibi ortam değişkenleri ya da `dotnet user-secrets`. `.env` ve `appsettings.{Environment}.json` dosyaları `.gitignore` ile repoya dahil edilmez.
+`appsettings.json` only contains default/placeholder values. Real secrets (JWT key, Pexels API key, database password) are provided via environment variables: `Sosyolobi Backend/.env` when running with Docker, or environment variables such as `Jwt__Secret` and `Pexels__ApiKey` (or `dotnet user-secrets`) when running directly. `.env` and `appsettings.{Environment}.json` files are excluded from the repository via `.gitignore`.
 
-> **Not:** `Sms:DevelopmentMode` açıkken OTP kodu sabittir (`123456`) ve SMS gönderilmez. Production ortamında kapatılmalıdır.
+> **Note:** While `Sms:DevelopmentMode` is enabled, the OTP code is fixed (`123456`) and no SMS is sent. It must be disabled in production.
 
-## Lisans
+## License
 
-Bu proje özel bir projedir; tüm hakları saklıdır.
+This is a private project; all rights reserved.
