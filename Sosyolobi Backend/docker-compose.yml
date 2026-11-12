@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sosyolobi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123}
+    ports:
+      - "5433:5432"
+    volumes:
+      - sosyolobi-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  sosyolobi.api:
+    image: ${DOCKER_REGISTRY-}sosyolobiapi
+    build:
+      context: .
+      dockerfile: Sosyolobi.Api/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=sosyolobi;Username=postgres;Password=${POSTGRES_PASSWORD:-123}
+      - Jwt__Secret=${JWT_SECRET:-CHANGE_ME_LONG_SECRET_KEY_AT_LEAST_32_CHARS}
+      - Pexels__ApiKey=${PEXELS_API_KEY:-}
+    ports:
+      - "5000:8080"
+    volumes:
+      - sosyolobi-avatars:/app/wwwroot/avatars
+      - sosyolobi-category-images:/app/wwwroot/categories
+
+volumes:
+  sosyolobi-pgdata:
+  sosyolobi-avatars:
+  sosyolobi-category-images:

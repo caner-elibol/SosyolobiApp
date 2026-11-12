@@ -1,0 +1,82 @@
+# Old frontend (replaced by sosyolobi-web-2)
+sosyolobi-web/
+
+# Locally uploaded avatars (served from a Docker volume in containers; not source)
+Sosyolobi Backend/Sosyolobi.Api/wwwroot/avatars/*
+!Sosyolobi Backend/Sosyolobi.Api/wwwroot/avatars/.gitkeep
+
+# Locally cached category images (downloaded from Pexels, served from a Docker volume; not source)
+Sosyolobi Backend/Sosyolobi.Api/wwwroot/categories/*
+!Sosyolobi Backend/Sosyolobi.Api/wwwroot/categories/.gitkeep
+
+# Build outputs
+bin/
+obj/
+.shots
+
+# .NET
+*.user
+*.suo
+*.userosscache
+*.sln.docobj
+*.userprefs
+.vs/
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+*.sln.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Secrets & config overrides
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Docker
+docker-compose.override.yml
+
+# Test results
+TestResults/
+coverage/
+*.trx
+*.coveragexml
+
+# AI agent / internal notes (kept locally, not versioned)
+CLAUDE*.md
+AGENTS.md
+.github/copilot-instructions.md
+docs/*.md
+
+# Generated code graph
+graphify-out/
+
+# Publish output
+sosyolobi-app/
+
+# Screenshots
+sosyolobi-mobile/*.png
+
+# Local docs & Claude settings
+docs/
+.claude/

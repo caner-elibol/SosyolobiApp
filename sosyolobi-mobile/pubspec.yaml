@@ -1,0 +1,100 @@
+name: sosyolobi_mobile
+description: "Sosyolobi Mobile Application"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State management
+  flutter_riverpod: ^3.4.2
+  riverpod: ^3.4.2
+  riverpod_annotation: ^4.0.6
+
+  # Networking
+  dio: ^5.7.0
+
+  # Auth / storage
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.3
+
+  # Navigation
+  go_router: ^14.6.2
+
+  # Map
+  maplibre_gl: ^0.26.2
+
+  # Location
+  geolocator: ^13.0.2
+
+  # Realtime
+  signalr_netcore: ^1.4.1
+
+  # Media
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
+
+  # Models
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
+
+  # Formatting
+  intl: ^0.20.1
+
+  # Calendar
+  add_2_calendar: ^3.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Code generation
+  build_runner: ^2.16.0
+  riverpod_generator: ^4.0.8
+  freezed: ^4.0.0-dev.3
+  json_serializable: ^6.14.1
+
+  # Branding (app icon + native splash) — run after changing assets/branding/*:
+  #   dart run flutter_launcher_icons
+  #   dart run flutter_native_splash:create
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/branding/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/branding/app_icon.png"
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/branding/app_icon.png"
+
+flutter_native_splash:
+  # Full-bleed splash design (not a small centered logo on a plain
+  # background) — pre-sized 1024x1536 for phone aspect ratios. `color` and
+  # `background_image` are mutually exclusive per flutter_native_splash's
+  # own docs ("select one, they can't work together") — setting both
+  # silently fell back to a 1x1 placeholder instead of the real image.
+  background_image: assets/branding/splash_full.png
+  android_12:
+    # Android 12+'s native Splash Screen API is an OS-level constraint: it
+    # only supports a solid color + a small centered icon, never a full-bleed
+    # custom image — this can't be worked around from the Flutter side, so
+    # Android 12+ falls back to the app icon on white instead of the full
+    # splash_full.png design that iOS and older Android get.
+    color: "#FFFFFF"
+    image: assets/branding/app_icon.png
